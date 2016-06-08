@@ -25,7 +25,11 @@
 * Keep user score with visible counter
 * Fancy affects
 
-![ScreenShot](http://i.imgur.com/v8IVDka.jpg)
+![ScreenShot](wireframe.png)
+
+## Additional Resources and Research
+
+Special thanks to [css tricks]((https://css-tricks.com/snippets/jquery/get-x-y-mouse-coordinates/)) for helping me figure out how to define my mouse coordinates with jquery
 
 
 

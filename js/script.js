@@ -1,6 +1,14 @@
 $(document).ready(function(){
 console.log("Ready");
 
+//Globals
+
+
+
+//Functions
+
+
+
 
 
 
