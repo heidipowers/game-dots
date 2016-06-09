@@ -1,24 +1,26 @@
 $box-width: 100px;
 $box-height: 100px;
 $border-color: transparent;
-$border-width: 1px;
+$border-width: 2px;
 $box-color: transparent;
 $border: $border-width solid $border-color;
 $body-width: ($box-width)*4;
+$border-hover-color: orange;
 
 .container {
   width: 100%;
-  margin-top: 4em;
+  margin: 4em 0;
+  padding: 3em 0;
+  background-color: lightblue;
 }
-
 
 .game-body {
   width: $body-width;
-  background-color: green;
+  background-color: teal;
   height: auto;
 }
 
-
+//BOXES
 
 .box {
 width: $box-width;
@@ -28,11 +30,13 @@ border: $border;
 position: relative;
 }
 
+//DOTS
+
 .dot {
   height: 10px;
   width: 10px;
   position: absolute;
-  background-color: #000;
+  background-color: orange;
   border-radius: 50%;
 }
 
@@ -60,3 +64,37 @@ position: relative;
   bottom: -5px;
   left: -5px;
 }
+
+//EVENT CLASSES
+
+.hover-left{
+  border-left: $border-width solid $border-hover-color;
+}
+
+.hover-right {
+  border-right: $border-width solid $border-hover-color;
+}
+
+.hover-bottom {
+  border-bottom: $border-width solid $border-hover-color;
+}
+
+.hover-top {
+  border-top: $border-width solid $border-hover-color;
+}
+
+.click-effect{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
