@@ -10,7 +10,8 @@ var $boxLow = $boxSize - $boxHigh;
 
 var $border = "2px solid red";
 
-
+var $topRow = $('.row.one');
+console.log($topRow);
 //Functions
 
 function addBorder(box, borderSide){
@@ -30,11 +31,19 @@ function hoverOn(e) {
     $(this).addClass('hover-left');
   }else if(($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize )){
     console.log('Right Side');
-    $(this).addClass('hover-right');
+    if($(this).hasClass('fourth')){
+      $(this).addClass('hover-right');
+    }else{
+    $(this).addClass('hover-transparent');
+  }
   }else if(($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation >= $boxZero && $yLocation <= $boxLow )){
-    $(this).addClass('hover-top');
+        $(this).addClass('hover-top');
   }else if(($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)){
-    $(this).addClass('hover-bottom');
+    if($(this).hasClass('fourth-row')){
+      $(this).addClass('hover-bottom');
+    }else{
+       $(this).addClass('hover-transparent');
+    }
   }
 
 }
@@ -45,6 +54,7 @@ $(this).removeClass('hover-left');
 $(this).removeClass('hover-right');
 $(this).removeClass('hover-top');
 $(this).removeClass('hover-bottom');
+$(this).removeClass('hover-transparent');
 }
 
 //Get the position of mouse on click event
