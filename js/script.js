@@ -121,15 +121,6 @@ $(document).ready(function() {
 
             $($box).on('click', function(e) {
 
-                    var $dataLeft = $(this).attr('data-left');
-                    var $dataTop = $(this).attr('data-top');
-                    var $dataBottom = $(this).attr('data-bottom');
-                    var $dataRight = $(this).attr('data-right');
-                    $dataLeft = false;
-                    $dataTop = false;
-                    $dataBottom = false;
-                    $dataTop = false;
-
                     var $offset = $(this).offset();
                     var $xLocation = (e.pageX - $offset.left);
                     var $yLocation = (e.pageY - $offset.top);
@@ -139,16 +130,15 @@ $(document).ready(function() {
                         console.log("Left Side");
                         if ($(this).hasClass('first')) {
                           addBorder($(this), "left");
-                            $(this).attr('data-left', ($dataLeft = true));
+                            $(this).attr('data-left', true);
                             $(this).off('mouseenter', hoverLeft);
                             console.log('clicked first x');
                             removeHoverSide($(this), "left");
                             console.log("x first");
                         } else {
-
                             addBorder($(this), "left");
-                            $(this).attr('data-left', ($dataLeft = true));
-                            $(this).prev().attr('data-right', ($dataRight = true));
+                            $(this).attr('data-left', true);
+                            $(this).prev().attr('data-right', true);
                             $(this).off('mouseenter', hoverLeft);
                             console.log('clicked first x');
                             removeHoverSide($(this), "left");
@@ -157,7 +147,7 @@ $(document).ready(function() {
                         console.log('Right Side');
                         $(this).off('mouseenter', hoverRight);
                         removeHoverSide($(this), 'right');
-                        $(this).attr('data-right', ($dataRight = true));
+                        $(this).attr('data-right', true);
                         if ($(this).hasClass('fourth')) {
                             $(this).css("border-right", $border);
                             console.log('second click');
@@ -167,13 +157,15 @@ $(document).ready(function() {
                             addBorder($(this), 'top');
                             console.log('top click');
                             $(this).off('mouseenter', hoverTop);
-                            $(this).attr('data-top', ($dataTop = true));
+                            $(this).attr('data-top', true);
                             removeHoverSide($(this), 'top');
+                            $(this).parent().prev().children().eq($(this).index()).attr('data-bottom', true);
                         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
                             console.log('Bottom Side');
-                            addBorder($(this), 'bottom');
+
+                               addBorder($(this), 'bottom');
                             $(this).off('mouseenter', hoverBottom);
-                            $(this).attr('data-bottom', ($dataBottom = true));
+                            $(this).attr('data-bottom', true);
                             removeHoverSide($(this), 'bottom');
                         }
 
