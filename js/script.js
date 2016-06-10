@@ -7,9 +7,14 @@ $(document).ready(function() {
             var $boxZero = $boxSize - $boxSize;
             var $boxHigh = $boxSize * 0.90;
             var $boxLow = $boxSize - $boxHigh;
+            var $border = "2px solid orange";
 
-            var $border = "2px solid red";
+            var playerOne = 1;
+            var playerTwo = 2;
+            var currentPlayer = playerOne;
 
+            var playerOneScore = 0;
+            var playerTwoScore = 0;
 
             //Functions
 
@@ -72,12 +77,13 @@ $(document).ready(function() {
             } // end hoverBottom
 
 
-
-
+              //Add side for hover
             function addHoverSide(box, side) {
                 box.addClass('hover-' + side);
             } // end addHoverSide
 
+
+            //Remove Side for Hover
             function removeHoverSide(box, side) {
                 box.removeClass('hover-' + side);
             } //removeHoverSide
@@ -92,17 +98,42 @@ $(document).ready(function() {
                 $(this).removeClass('hover-transparent');
             }
 
+            //PlayerSwitch
+
+            function switchPlayer(){
+              if(currentPlayer === playerOne){
+                currentPlayer = playerTwo;
+              }else {
+                currentPlayer = playerOne;
+              }
+            }// end switchPlayer
+
+            //player Count
+
+            function incrementPlayerCount(){
+              if(currentPlayer === playerOne){
+                playerOneScore++;
+              }else{
+                playerTwoScore++;
+              }
+            }
+
+
             //Check win
 
-            function checkWin(box){
-              if(box.attr('data-top') && box.attr('data-right') && box.attr('data-bottom') && box.attr('data-top')){
-                console.log("true");
-                console.log(box);
-                box.css('background', "black");
-              } else {
-                console.log(false);
-                console.log(box);
+            function checkWin(){
+              var allBoxes = $('.box');
+              for(let i = 0; i < allBoxes.length; i++) {
+                if(allBoxes.eq(i).attr('data-top') && allBoxes.eq(i).attr('data-right') && allBoxes.eq(i).attr('data-bottom') && allBoxes.eq(i).attr('data-left')){
+                  console.log("true");
+                  allBoxes.eq(i).css('background', "black");
+                  incrementPlayerCount();
+                }else {
+                  switchPlayer();
+                }
+
               }
+
             }//end CheckWin
 
             //Get the position of mouse on click event
@@ -125,28 +156,30 @@ $(document).ready(function() {
                         } else {
                             //LEFT
                             addBorder($(this), "left");
-                            $(this).attr('data-left', true);
-                            var realBox= $(this).prev();
-                            $(this).prev().attr('data-right', true);
+                            $(this).attr('data-left', true);//sets left border for box clicked in
+                            $(this).prev().attr('data-right', true);//sets right border for previous sibling shared border
                             $(this).off('mouseenter', hoverLeft);
                             removeHoverSide($(this), "left");
                         }
                     } else if (($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
-                        //RIGHT
-                        $(this).off('mouseenter', hoverRight);
-                        removeHoverSide($(this), 'right');
-                        $(this).attr('data-right', true);
                         //FAR RIGHT
                         if ($(this).hasClass('fourth')) {
                             $(this).css("border-right", $border);
+                            $(this).off('mouseenter', hoverRight);
+                             removeHoverSide($(this), 'right');
+                             $(this).attr('data-right', true);
+                            }else{ //RIGHT
+                             $(this).off('mouseenter', hoverRight);
+                             removeHoverSide($(this), 'right');
+                            $(this).attr('data-right', true);//sets right border
                             }
+
                         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation >= $boxZero && $yLocation <= $boxLow)) {
                             //TOP
                             addBorder($(this), 'top');
                             $(this).off('mouseenter', hoverTop);
                             $(this).attr('data-top', true);
                             removeHoverSide($(this), 'top');
-                            var realBox= $(this).parent().prev().children().eq($(this).index())
                             $(this).parent().prev().children().eq($(this).index()).attr('data-bottom', true);
                         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
                             //BOTTOM
@@ -156,18 +189,13 @@ $(document).ready(function() {
                             removeHoverSide($(this), 'bottom');
                         }
 
-                        if (realBox== false){
-                          checkWin($(this));
-                        } else{
-                          console.log("check first box")
-                          checkWin(realBox);
-                          checkWin($(this));
-                        }
-
-
+                        checkWin();
                     }); //end box Click Function
 
-                $box.hover(hoverLeft, hoverOff); $box.hover(hoverRight, hoverOff); $box.hover(hoverTop, hoverOff); $box.hover(hoverBottom, hoverOff);
+                $box.hover(hoverLeft, hoverOff);
+                $box.hover(hoverRight, hoverOff);
+                $box.hover(hoverTop, hoverOff);
+                $box.hover(hoverBottom, hoverOff);
 
 
 
