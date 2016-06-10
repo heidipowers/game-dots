@@ -10,13 +10,14 @@ $(document).ready(function() {
 
             var $border = "2px solid red";
 
-            var $topRow = $('.row.one');
-            console.log($topRow);
+
             //Functions
 
+
+            //Add border on click
             function addBorder(box, borderSide) {
                 box.css("border-" + borderSide, $border);
-                console.log(box);
+
             }
 
             //Hover Over
@@ -81,32 +82,6 @@ $(document).ready(function() {
                 box.removeClass('hover-' + side);
             } //removeHoverSide
 
-            function hoverOn(e) {
-
-                var $offset = $(this).offset();
-                var $xLocation = (e.pageX - $offset.left);
-                var $yLocation = (e.pageY - $offset.top);
-
-                console.log("X: " + $xLocation + "  Y: " + $yLocation);
-                if (($xLocation >= $boxZero && $xLocation <= $boxLow) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
-                    addHoverSide($(this), 'left');
-                } else if (($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
-                    console.log('Right Side');
-                    if ($(this).hasClass('fourth')) {
-                        addHoverSide($(this), 'right');
-                    } else {
-                        $(this).addClass('hover-transparent');
-                    }
-                } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation >= $boxZero && $yLocation <= $boxLow)) {
-                    $(this).addClass('hover-top');
-                } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
-                    if ($(this).hasClass('fourth-row')) {
-                        addHoverSide($(this), 'bottom');
-                    } else {
-                        $(this).addClass('hover-transparent');
-                    }
-                }
-            }
 
             //Hover Off
             function hoverOff() {
@@ -117,6 +92,19 @@ $(document).ready(function() {
                 $(this).removeClass('hover-transparent');
             }
 
+            //Check win
+
+            function checkWin(box){
+              if(box.attr('data-top') && box.attr('data-right') && box.attr('data-bottom') && box.attr('data-top')){
+                console.log("true");
+                console.log(box);
+                box.css('background', "black");
+              } else {
+                console.log(false);
+                console.log(box);
+              }
+            }//end CheckWin
+
             //Get the position of mouse on click event
 
             $($box).on('click', function(e) {
@@ -125,48 +113,55 @@ $(document).ready(function() {
                     var $xLocation = (e.pageX - $offset.left);
                     var $yLocation = (e.pageY - $offset.top);
 
-                    console.log("X: " + $xLocation + "  Y: " + $yLocation);
+                    //console.log("X: " + $xLocation + "  Y: " + $yLocation);
                     if (($xLocation >= $boxZero && $xLocation <= $boxLow) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
-                        console.log("Left Side");
+
                         if ($(this).hasClass('first')) {
+                          //LEFT FAR LEFT
                           addBorder($(this), "left");
                             $(this).attr('data-left', true);
                             $(this).off('mouseenter', hoverLeft);
-                            console.log('clicked first x');
                             removeHoverSide($(this), "left");
-                            console.log("x first");
                         } else {
+                            //LEFT
                             addBorder($(this), "left");
                             $(this).attr('data-left', true);
+                            var realBox= $(this).prev();
                             $(this).prev().attr('data-right', true);
                             $(this).off('mouseenter', hoverLeft);
-                            console.log('clicked first x');
                             removeHoverSide($(this), "left");
                         }
                     } else if (($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
-                        console.log('Right Side');
+                        //RIGHT
                         $(this).off('mouseenter', hoverRight);
                         removeHoverSide($(this), 'right');
                         $(this).attr('data-right', true);
+                        //FAR RIGHT
                         if ($(this).hasClass('fourth')) {
                             $(this).css("border-right", $border);
-                            console.log('second click');
                             }
                         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation >= $boxZero && $yLocation <= $boxLow)) {
-                            console.log('Top Side');
+                            //TOP
                             addBorder($(this), 'top');
-                            console.log('top click');
                             $(this).off('mouseenter', hoverTop);
                             $(this).attr('data-top', true);
                             removeHoverSide($(this), 'top');
+                            var realBox= $(this).parent().prev().children().eq($(this).index())
                             $(this).parent().prev().children().eq($(this).index()).attr('data-bottom', true);
                         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
-                            console.log('Bottom Side');
-
-                               addBorder($(this), 'bottom');
+                            //BOTTOM
+                            addBorder($(this), 'bottom');
                             $(this).off('mouseenter', hoverBottom);
                             $(this).attr('data-bottom', true);
                             removeHoverSide($(this), 'bottom');
+                        }
+
+                        if (realBox== false){
+                          checkWin($(this));
+                        } else{
+                          console.log("check first box")
+                          checkWin(realBox);
+                          checkWin($(this));
                         }
 
 
