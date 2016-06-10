@@ -66,6 +66,10 @@ position: relative;
   left: -5px;
 }
 
+.columns, .column {
+  float: left;
+}
+
 //EVENT CLASSES
 
 .hover-left {
