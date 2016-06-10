@@ -167,13 +167,13 @@ $(document).ready(function() {
                             addBorder($(this), 'top');
                             console.log('top click');
                             $(this).off('mouseenter', hoverTop);
-                            $(this).attr('data-top', $dataTop = true);
+                            $(this).attr('data-top', ($dataTop = true));
                             removeHoverSide($(this), 'top');
                         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
                             console.log('Bottom Side');
                             addBorder($(this), 'bottom');
                             $(this).off('mouseenter', hoverBottom);
-                            $(this).attr('data-bottom', $dataBottom = true);
+                            $(this).attr('data-bottom', ($dataBottom = true));
                             removeHoverSide($(this), 'bottom');
                         }
 
