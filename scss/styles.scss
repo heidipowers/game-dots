@@ -31,6 +31,7 @@ border: $border-width solid $transparent;
 position: relative;
 }
 
+
 //DOTS
 
 .dot {
@@ -76,13 +77,16 @@ position: relative;
   border-left: $border-width solid $border-hover-color;
 }
 
+
 .hover-right {
   border-right: $border-width solid $border-hover-color;
+  transition: 250ms ease-in-out;
 }
 
 .hover-bottom {
-  border-bottom: $border-width solid $border-hover-color;
+border-bottom: $border-width solid $border-hover-color;
 }
+
 
 .hover-top {
   border-top: $border-width solid $border-hover-color;
@@ -91,6 +95,14 @@ position: relative;
 .hover-transparent {
   border-color: $transparent;
 }
+
+
+
+
+
+
+
+
 
 
 

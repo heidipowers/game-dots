@@ -50,7 +50,8 @@
   border-left: 2px solid orange; }
 
 .hover-right {
-  border-right: 2px solid orange; }
+  border-right: 2px solid orange;
+  transition: 250ms ease-in-out; }
 
 .hover-bottom {
   border-bottom: 2px solid orange; }
