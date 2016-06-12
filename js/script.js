@@ -17,6 +17,7 @@ $(document).ready(function() {
 
     var playerOneScore = 0;
     var playerTwoScore = 0;
+    var gameCounter = 0;
 
     var $playerOneColor = "teal";
     var $playerTwoColor = "white";
@@ -28,10 +29,14 @@ $(document).ready(function() {
     var $colorBoxOne = $('.color-one');
     var $colorBoxTwo = $('.color-two');
 
-    $colorBoxOne.css({'background-color': $playerOneColor,
-                      'border': $border});
-    $colorBoxTwo.css({'background-color': $playerTwoColor,
-                      'border': $border});
+    $colorBoxOne.css({
+        'background-color': $playerOneColor,
+        'border': $border
+    });
+    $colorBoxTwo.css({
+        'background-color': $playerTwoColor,
+        'border': $border
+    });
 
     var $displayMessage = $('.message-update');
     $displayMessage.text("Welcome To Dots!");
@@ -41,15 +46,12 @@ $(document).ready(function() {
     $startButton.addClass('animated pulse infinite');
 
 
-
-
     //Functions
 
 
     //Add border on click
     function addBorder(box, borderSide) {
         box.css("border-" + borderSide, $border);
-
     }
 
     //Hover Over
@@ -92,12 +94,12 @@ $(document).ready(function() {
         var $offset = $(this).offset();
         var $xLocation = (e.pageX - $offset.left);
         var $yLocation = (e.pageY - $offset.top);
-
         if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
             if ($(this).hasClass('fourth-row')) {
                 addHoverSide($(this), 'bottom');
             } else {
                 $(this).addClass('hover-transparent');
+
             }
         }
 
@@ -127,9 +129,10 @@ $(document).ready(function() {
 
 
     //Check win
-
+var allBoxes = $('.incomplete');
     function checkWin() {
         var allBoxes = $('.incomplete');
+        var $fadeIn = $('.fadeIn');
         winBox = false;
         for (let i = 0; i < allBoxes.length; i++) {
 
@@ -137,50 +140,45 @@ $(document).ready(function() {
                 var $thisBox = allBoxes.eq(i);
                 $thisBox.removeClass('incomplete');
                 incrementPlayerCount();
-                console.log(currentPlayer, ' gets point');
                 winBox = true;
-                console.log(winBox, ' inside');
-                console.log(allBoxes.length, " First");
                 if (currentPlayer === playerOne) {
                     $thisBox.css('background', $playerOneColor);
+                    gameCounter++;
                 } else {
                     $thisBox.css('background', $playerTwoColor);
+                    gameCounter++;
                 }
-
-
             } //end if
-            console.log(allBoxes.length, " SECOND");
+
         } //end for loop allBoxes
 
-        console.log(winBox, ' outside');
-        $displayMessage.text(currentPlayer + " you get to go again!");
-        console.log(allBoxes.length, " third");
         return winBox;
     } //end CheckWin
 
 
-function winMessage (){
-  if (allBoxes.length === 1){
-          if(playerOneScore > playerTwoScore){
-            $displayMessage.text("Congrats " + playerOne + " wins!");
-          }else if (playerTwoScore > playerOneScore){
-            $displayMessage.text("Congrats " + playerTwo + " wins!");
-          }else {
-            $displayMessage.html("A tie! Want to Play Again?");
-          }
-        }
-}
+    function winMessage() {
 
+            if (playerOneScore > playerTwoScore) {
+                $displayMessage.text("Congrats " + playerOne + " wins!");
+            } else if (playerTwoScore > playerOneScore) {
+                $displayMessage.text("Congrats " + playerTwo + " wins!");
+            } else {
+                $displayMessage.html("A tie! Want to Play Again?");
+            }
+            $startButton.fadeIn('slow', boardReset());
+    }
 
     //PlayerSwitch
 
 
     function assignPlayer() {
-        if (winBox === true) {
-            currentPlayer = currentPlayer;
+        if (winBox === true && gameCounter <= 15) {
+           currentPlayer = currentPlayer;
             $displayMessage.text(currentPlayer + " you got a box! Go again!");
-        } else {
-            switchPlayer();
+        } else if(winBox === true && gameCounter === 16 ){
+            winMessage();
+        }else {
+          switchPlayer();
         }
 
     } //end assignPlayer
@@ -191,7 +189,7 @@ function winMessage (){
         } else {
             currentPlayer = playerOne;
         }
-       $displayMessage.text(currentPlayer + " You're up!");
+        $displayMessage.text(currentPlayer + " it's your turn!");
     } //end switchPLayer
 
     //player Count
@@ -204,11 +202,28 @@ function winMessage (){
             playerTwoScore++;
             playerTwoScorebox.text(playerTwoScore);
         }
-    }// end incrementPlayerCounter
+    } // end incrementPlayerCounter
+
+    function boardReset (){
+            $box.css({'background-color': 'transparent', 'border': '1px solid transparent'});
+            $box.addClass('incomplete');
+            playerOneScore = 0;
+            playerTwoScore = 0;
+            gameCounter = 0;
+    }
+
+    $box.on('click', function(e){
+
+
+        var offset = $(this).offset();
+        var xLocation = (e.pageX - offset.left);
+        var yLocation = (e.pageY - offset.top);
+        console.log(xLocation, " X and Y ", yLocation);
+    });
 
     //Get the position of mouse on click event
 
-    $($box).on('click', function(e) {
+    $box.on('click', function(e) {
 
         var $offset = $(this).offset();
         var $xLocation = (e.pageX - $offset.left);
@@ -233,6 +248,7 @@ function winMessage (){
                 $(this).off('mouseenter', hoverLeft);
                 removeHoverSide($(this), "left");
 
+
             }
         } else if (($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
             //FAR RIGHT
@@ -241,6 +257,7 @@ function winMessage (){
                 $(this).off('mouseenter', hoverRight);
                 removeHoverSide($(this), 'right');
                 $(this).attr('data-right', true);
+
 
             } else { //RIGHT
                 $(this).off('mouseenter', hoverRight);
@@ -254,9 +271,12 @@ function winMessage (){
             addBorder($(this), 'top');
             $(this).off('mouseenter', hoverTop);
             $(this).attr('data-top', true);
+
             removeHoverSide($(this), 'top');
             $(this).parent().prev().children().eq($(this).index()).off('mouseenter', hoverBottom);
+
             $(this).parent().prev().children().eq($(this).index()).attr('data-bottom', true);
+
 
         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
             //BOTTOM
@@ -266,38 +286,35 @@ function winMessage (){
                 $(this).attr('data-bottom', true);
                 removeHoverSide($(this), 'bottom');
 
+
             } else {
                 $(this).off('mouseenter', hoverBottom);
                 $(this).attr('data-bottom', true);
                 removeHoverSide($(this), 'bottom');
 
-            }//end inside if
+            } //end inside if
 
-        }else {
-          console.log(currentPlayer);
-          $displayMessage.text(currentPlayer + " stay between the lines...the lines...the lines are our friends...");
-          return;
-        }//end outside if
+        } else {
+            console.log(currentPlayer);
+            $displayMessage.text(currentPlayer + " stay between the lines...the lines...the lines are our friends...");
+            return;
+        } //end outside if
         checkWin();
         assignPlayer();
 
     }); //end box Click event
 
     $displayMessage.text("Welcome to Dots. Ready to Play? Click the button!");
+    $startButton.on('click', function() {
+            $displayMessage.text("Player One - Choose a line between two dots on the X or Y axis.");
+            $box.hover(hoverLeft, hoverOff);
+            $box.hover(hoverRight, hoverOff);
+            $box.hover(hoverTop, hoverOff);
+            $box.hover(hoverBottom, hoverOff);
+            $(this).fadeOut('slow');
 
 
-$startButton.on('click', function (){
-  $box.hover(hoverLeft, hoverOff);
-    $box.hover(hoverRight, hoverOff);
-    $box.hover(hoverTop, hoverOff);
-    $box.hover(hoverBottom, hoverOff);
-    $(this).fadeOut('slow', function() {
-    $(this).css("display", "hidden");
-});
-
-
-})
-
+        }); // end startButton
 
 
 
