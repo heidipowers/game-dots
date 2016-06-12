@@ -19,8 +19,8 @@ $(document).ready(function() {
     var playerTwoScore = 0;
     var gameCounter = 0;
 
-    var $playerOneColor = "teal";
-    var $playerTwoColor = "white";
+    var $playerOneColor = "#13ACC2";
+    var $playerTwoColor = "#B20943";
 
     var playerOneScorebox = $('.display-player1-score');
     var playerTwoScorebox = $('.display-player2-score');
@@ -28,6 +28,7 @@ $(document).ready(function() {
     playerTwoScorebox.text(playerTwoScore);
     var $colorBoxOne = $('.color-one');
     var $colorBoxTwo = $('.color-two');
+
 
     $colorBoxOne.css({
         'background-color': $playerOneColor,
@@ -42,17 +43,20 @@ $(document).ready(function() {
     $displayMessage.text("Welcome To Dots!");
     var winBox;
 
-    var $startButton = $('button');
+    var $startButton = $('.fancy');
     $startButton.addClass('animated pulse infinite');
 
 
     //Functions
 
-
-    //Add border on click
-    function addBorder(box, borderSide) {
-        box.css("border-" + borderSide, $border);
+    //Make Sure Z index of dots is on top
+     function getDotsOnTop(){
+    var $dots = $('.dot');
+    for(let i = 0; i < $dots.length; i++){
+      $dots.eq(i).css('z-index', (500 + i));
     }
+
+    }//end get dots on top
 
     //Hover Over
 
@@ -105,20 +109,7 @@ $(document).ready(function() {
 
     } // end hoverBottom
 
-
-    //Add side for hover
-    function addHoverSide(box, side) {
-        box.addClass('hover-' + side);
-    } // end addHoverSide
-
-
-    //Remove Side for Hover
-    function removeHoverSide(box, side) {
-        box.removeClass('hover-' + side);
-    } //removeHoverSide
-
-
-    //Hover Off
+     //Hover Off
     function hoverOff() {
         $(this).removeClass('hover-left');
         $(this).removeClass('hover-right');
@@ -128,11 +119,26 @@ $(document).ready(function() {
     }
 
 
-    //Check win
+    //Add side for hover function
+    function addHoverSide(box, side) {
+        box.addClass('hover-' + side);
+    } // end addHoverSide
+
+    //Add border for click function
+    function addBorder(box, borderSide) {
+        box.css("border-" + borderSide, $border);
+    }
+
+    //Remove Side for Hover
+    function removeHoverSide(box, side) {
+        box.removeClass('hover-' + side);
+    } //removeHoverSide
+
+
+    //Check for win
 var allBoxes = $('.incomplete');
     function checkWin() {
         var allBoxes = $('.incomplete');
-        var $fadeIn = $('.fadeIn');
         winBox = false;
         for (let i = 0; i < allBoxes.length; i++) {
 
@@ -155,7 +161,7 @@ var allBoxes = $('.incomplete');
         return winBox;
     } //end CheckWin
 
-
+    // Display Winner
     function winMessage() {
 
             if (playerOneScore > playerTwoScore) {
@@ -163,13 +169,11 @@ var allBoxes = $('.incomplete');
             } else if (playerTwoScore > playerOneScore) {
                 $displayMessage.text("Congrats " + playerTwo + " wins!");
             } else {
-                $displayMessage.html("A tie! Want to Play Again?");
+                $displayMessage.text("A tie! Everyone Wins!");
             }
-            $startButton.fadeIn('slow', boardReset());
-    }
+    }//end Win Function
 
-    //PlayerSwitch
-
+    //Find if box completed, assign correct player and/or win message
 
     function assignPlayer() {
         if (winBox === true && gameCounter <= 15) {
@@ -183,6 +187,8 @@ var allBoxes = $('.incomplete');
 
     } //end assignPlayer
 
+
+    // Switch Player if no box is made
     function switchPlayer() {
         if (currentPlayer === playerOne) {
             currentPlayer = playerTwo;
@@ -192,7 +198,7 @@ var allBoxes = $('.incomplete');
         $displayMessage.text(currentPlayer + " it's your turn!");
     } //end switchPLayer
 
-    //player Count
+    //player Count for score
 
     function incrementPlayerCount() {
         if (currentPlayer === playerOne) {
@@ -204,28 +210,13 @@ var allBoxes = $('.incomplete');
         }
     } // end incrementPlayerCounter
 
-    function boardReset (){
-            $box.css({'background-color': 'transparent', 'border': '1px solid transparent'});
-            $box.addClass('incomplete');
-            playerOneScore = 0;
-            playerTwoScore = 0;
-            gameCounter = 0;
-    }
 
-    $box.on('click', function(e){
-
-
-        var offset = $(this).offset();
-        var xLocation = (e.pageX - offset.left);
-        var yLocation = (e.pageY - offset.top);
-        console.log(xLocation, " X and Y ", yLocation);
-    });
 
     //Get the position of mouse on click event
 
-    $box.on('click', function(e) {
+function boxClick(e){
 
-        var $offset = $(this).offset();
+  var $offset = $(this).offset();
         var $xLocation = (e.pageX - $offset.left);
         var $yLocation = (e.pageY - $offset.top);
 
@@ -302,18 +293,20 @@ var allBoxes = $('.incomplete');
         checkWin();
         assignPlayer();
 
-    }); //end box Click event
+}//end Box Click
 
+
+    getDotsOnTop();
     $displayMessage.text("Welcome to Dots. Ready to Play? Click the button!");
+
     $startButton.on('click', function() {
             $displayMessage.text("Player One - Choose a line between two dots on the X or Y axis.");
             $box.hover(hoverLeft, hoverOff);
             $box.hover(hoverRight, hoverOff);
             $box.hover(hoverTop, hoverOff);
             $box.hover(hoverBottom, hoverOff);
+            $box.on('click', boxClick);
             $(this).fadeOut('slow');
-
-
         }); // end startButton
 
 
