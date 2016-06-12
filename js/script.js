@@ -46,20 +46,17 @@ $(document).ready(function() {
     var $startButton = $('.fancy');
     $startButton.addClass('animated pulse infinite');
 
-
     //Functions
 
     //Make Sure Z index of dots is on top
-     function getDotsOnTop(){
-    var $dots = $('.dot');
-    for(let i = 0; i < $dots.length; i++){
-      $dots.eq(i).css('z-index', (500 + i));
-    }
+    function getDotsOnTop() {
+        var $dots = $('.dot');
+        for (let i = 0; i < $dots.length; i++) {
+            $dots.eq(i).css('z-index', (500 + i));
+        }
+    } //end get dots on top
 
-    }//end get dots on top
-
-    //Hover Over
-
+    //Hovers
     function hoverLeft(e) {
         var $offset = $(this).offset();
         var $xLocation = (e.pageX - $offset.left);
@@ -109,15 +106,13 @@ $(document).ready(function() {
 
     } // end hoverBottom
 
-     //Hover Off
     function hoverOff() {
-        $(this).removeClass('hover-left');
-        $(this).removeClass('hover-right');
-        $(this).removeClass('hover-top');
-        $(this).removeClass('hover-bottom');
-        $(this).removeClass('hover-transparent');
-    }
-
+        $(this).removeClass('hover-left')
+            .removeClass('hover-right')
+            .removeClass('hover-top')
+            .removeClass('hover-bottom')
+            .removeClass('hover-transparent');
+    } //end hover off
 
     //Add side for hover function
     function addHoverSide(box, side) {
@@ -134,14 +129,11 @@ $(document).ready(function() {
         box.removeClass('hover-' + side);
     } //removeHoverSide
 
-
     //Check for win
-var allBoxes = $('.incomplete');
     function checkWin() {
         var allBoxes = $('.incomplete');
         winBox = false;
         for (let i = 0; i < allBoxes.length; i++) {
-
             if (allBoxes.eq(i).attr('data-top') && allBoxes.eq(i).attr('data-right') && allBoxes.eq(i).attr('data-bottom') && allBoxes.eq(i).attr('data-left')) {
                 var $thisBox = allBoxes.eq(i);
                 $thisBox.removeClass('incomplete');
@@ -155,38 +147,32 @@ var allBoxes = $('.incomplete');
                     gameCounter++;
                 }
             } //end if
-
         } //end for loop allBoxes
-
         return winBox;
     } //end CheckWin
 
     // Display Winner
     function winMessage() {
-
-            if (playerOneScore > playerTwoScore) {
-                $displayMessage.text("Congrats " + playerOne + " wins!");
-            } else if (playerTwoScore > playerOneScore) {
-                $displayMessage.text("Congrats " + playerTwo + " wins!");
-            } else {
-                $displayMessage.text("A tie! Everyone Wins!");
-            }
-    }//end Win Function
+        if (playerOneScore > playerTwoScore) {
+            $displayMessage.text("Congrats " + playerOne + " wins!");
+        } else if (playerTwoScore > playerOneScore) {
+            $displayMessage.text("Congrats " + playerTwo + " wins!");
+        } else {
+            $displayMessage.text("A tie! Everyone Wins!");
+        }
+    } //end Win Function
 
     //Find if box completed, assign correct player and/or win message
-
     function assignPlayer() {
         if (winBox === true && gameCounter <= 15) {
-           currentPlayer = currentPlayer;
+            currentPlayer = currentPlayer;
             $displayMessage.text(currentPlayer + " you got a box! Go again!");
-        } else if(winBox === true && gameCounter === 16 ){
+        } else if (winBox === true && gameCounter === 16) {
             winMessage();
-        }else {
-          switchPlayer();
+        } else {
+            switchPlayer();
         }
-
     } //end assignPlayer
-
 
     // Switch Player if no box is made
     function switchPlayer() {
@@ -210,13 +196,10 @@ var allBoxes = $('.incomplete');
         }
     } // end incrementPlayerCounter
 
-
-
     //Get the position of mouse on click event
+    function boxClick(e) {
 
-function boxClick(e){
-
-  var $offset = $(this).offset();
+        var $offset = $(this).offset();
         var $xLocation = (e.pageX - $offset.left);
         var $yLocation = (e.pageY - $offset.top);
 
@@ -238,8 +221,6 @@ function boxClick(e){
                 $(this).prev().off('mouseenter', hoverRight);
                 $(this).off('mouseenter', hoverLeft);
                 removeHoverSide($(this), "left");
-
-
             }
         } else if (($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
             //FAR RIGHT
@@ -249,12 +230,10 @@ function boxClick(e){
                 removeHoverSide($(this), 'right');
                 $(this).attr('data-right', true);
 
-
             } else { //RIGHT
                 $(this).off('mouseenter', hoverRight);
                 removeHoverSide($(this), 'right');
                 $(this).attr('data-right', true); //sets right border
-
             }
 
         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation >= $boxZero && $yLocation <= $boxLow)) {
@@ -262,12 +241,9 @@ function boxClick(e){
             addBorder($(this), 'top');
             $(this).off('mouseenter', hoverTop);
             $(this).attr('data-top', true);
-
             removeHoverSide($(this), 'top');
             $(this).parent().prev().children().eq($(this).index()).off('mouseenter', hoverBottom);
-
             $(this).parent().prev().children().eq($(this).index()).attr('data-bottom', true);
-
 
         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
             //BOTTOM
@@ -292,25 +268,20 @@ function boxClick(e){
         } //end outside if
         checkWin();
         assignPlayer();
-
-}//end Box Click
-
+    } //end Box Click
 
     getDotsOnTop();
     $displayMessage.text("Welcome to Dots. Ready to Play? Click the button!");
 
     $startButton.on('click', function() {
-            $displayMessage.text("Player One - Choose a line between two dots on the X or Y axis.");
-            $box.hover(hoverLeft, hoverOff);
-            $box.hover(hoverRight, hoverOff);
-            $box.hover(hoverTop, hoverOff);
-            $box.hover(hoverBottom, hoverOff);
-            $box.on('click', boxClick);
-            $(this).fadeOut('slow');
-        }); // end startButton
-
-
-
+        $displayMessage.text("Player One - Choose a line between two dots on the X or Y axis.");
+        $box.hover(hoverLeft, hoverOff);
+        $box.hover(hoverRight, hoverOff);
+        $box.hover(hoverTop, hoverOff);
+        $box.hover(hoverBottom, hoverOff);
+        $box.on('click', boxClick);
+        $(this).fadeOut(1000);
+    }); // end startButton
 
     //DO NOT DELETE
 }); //end script
