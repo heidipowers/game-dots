@@ -22,20 +22,21 @@ h1 {
 
 .game-body {
   max-width: 20em;
-  background-color: rgba(0, 128, 128, 0.3);
   position: relative;
   margin: 1em auto; }
   @media (min-width: 550px) and (max-width: 1023px) {
     .game-body {
       max-width: 24em;
-      max-height: 24em; } }
+      max-height: 24em;
+      margin: 2em auto; } }
   @media (min-width: 1024px) {
     .game-body {
       max-width: 24em;
-      max-height: 24em; } }
+      max-height: 24em;
+      margin: 2em auto; } }
 
 .player-message {
-  border-bottom: 1px solid orange;
+  border-bottom: 1px solid #0AEBB0;
   margin-bottom: 1em; }
   @media (min-width: 1024px) {
     .player-message {
@@ -58,16 +59,14 @@ h1 {
 .button.fancy {
   position: absolute;
   border-radius: 50%;
-  background-color: orange;
+  background-color: #0AEBB0;
   min-width: 8rem;
   font-size: 2em;
-  -webkit-box-shadow: inset 0px 0px 60px 1px rgba(133, 97, 5, 0.6);
-  -moz-box-shadow: inset 0px 0px 60px 1px rgba(133, 97, 5, 0.6);
-  box-shadow: inset 0px 0px 60px 1px rgba(133, 97, 5, 0.6);
   left: 31%;
   top: 31%;
   z-index: 900;
-  transition: all 300ms; }
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.3); }
   @media (min-width: 550px) and (max-width: 1023px) {
     .button.fancy {
       min-width: 11rem;
@@ -82,26 +81,25 @@ h1 {
       top: 27.5%; } }
 
 .button.fancy:hover {
-  transform: scale(1.2);
-  -webkit-box-shadow: 0px 0px 24px 3px rgba(133, 97, 5, 0.6);
-  -moz-box-shadow: 0px 0px 24px 3px rgba(133, 97, 5, 0.6);
-  box-shadow: 0px 0px 24px 3px rgba(133, 97, 5, 0.6); }
+  transform: scale(1.2); }
 
 .button.clear {
   font-size: 1.2em;
   border-radius: 3px;
-  background-color: orange;
-  padding: 5px 10px; }
+  background-color: #0AEBB0;
+  padding: 5px 10px;
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.3); }
   @media (min-width: 550px) and (max-width: 1023px) {
     .button.clear {
       border-radius: 3px;
-      background-color: orange;
+      background-color: #0AEBB0;
       font-size: 2em;
       padding: 10px 20px; } }
   @media (min-width: 1024px) {
     .button.clear {
       border-radius: 3px;
-      background-color: orange;
+      background-color: #0AEBB0;
       font-size: 2em;
       padding: 10px 20px; } }
 
@@ -116,15 +114,15 @@ h1 {
       font-size: 3em; } }
 
 .scoreboard {
-  border-top: 1px solid orange;
-  border-bottom: 1px solid orange;
+  border-top: 1px solid #0AEBB0;
+  border-bottom: 1px solid #0AEBB0;
   background-color: white;
   padding: 1em; }
 
 .color-box {
   width: 1em;
   height: 1em;
-  background-color: orange;
+  background-color: #0AEBB0;
   display: inline-block;
   margin-right: 10px; }
 
@@ -143,18 +141,21 @@ h1 {
     .box {
       width: 6em;
       height: 6em; } }
+  .box .winner-name {
+    color: white;
+    padding-top: 10px; }
 
 .dot {
   height: 0.6em;
   width: 0.6em;
   position: absolute;
-  background-color: orange;
+  background-color: #0AEBB0;
   border-radius: 50%; }
 
 .dotted {
   height: 5px;
   width: 5px;
-  background-color: orange;
+  background-color: #0AEBB0;
   border-radius: 50%;
   display: inline-block;
   margin-left: 2px; }
@@ -203,19 +204,19 @@ h1 {
   float: left; }
 
 .hover-left {
-  border-left: 3px solid orange; }
+  border-left: 3px solid #0AEBB0; }
 
 .hover-right {
-  border-right: 3px solid orange; }
+  border-right: 3px solid #0AEBB0; }
 
 .hover-right:hover {
   transform: scaleY(1); }
 
 .hover-bottom {
-  border-bottom: 3px solid orange; }
+  border-bottom: 3px solid #0AEBB0; }
 
 .hover-top {
-  border-top: 3px solid orange; }
+  border-top: 3px solid #0AEBB0; }
 
 .hover-transparent {
   border-color: transparent; }

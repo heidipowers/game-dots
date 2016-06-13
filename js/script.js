@@ -9,7 +9,7 @@ $(document).ready(function() {
     var $boxZero = $boxSize - $boxSize;
     var $boxHigh = $boxSize * 0.90;
     var $boxLow = $boxSize - $boxHigh;
-    var $border = "2px solid orange";
+    var $border = "2px solid #0AEBB0";
 
     var playerOne = "Player One";
     var playerTwo = "Player Two";
@@ -19,8 +19,8 @@ $(document).ready(function() {
     var playerTwoScore = 0;
     var gameCounter = 0;
 
-    var $playerOneColor = "#13ACC2";
-    var $playerTwoColor = "#B20943";
+    var $playerOneColor = "#4E51FF";
+    var $playerTwoColor = "#FF5311";
 
     var playerOneScorebox = $('.display-player1-score');
     var playerTwoScorebox = $('.display-player2-score');
@@ -28,6 +28,8 @@ $(document).ready(function() {
     playerTwoScorebox.text(playerTwoScore);
     var $colorBoxOne = $('.color-one');
     var $colorBoxTwo = $('.color-two');
+
+    var $printWinner = $('<p class="winner-name"></p>').appendTo($box);
 
 
     $colorBoxOne.css({
@@ -39,16 +41,16 @@ $(document).ready(function() {
         'border': $border
     });
 
-    var $displayMessage = $('.message-update');
+    var $displayMessage = $('.message-update').addClass('animated');
     $displayMessage.text("Welcome To Dots!");
     var winBox;
 
     var $startButton = $('.fancy');
     $startButton.addClass('animated pulse infinite');
 
-    //Functions
+    //FUNCTIONS
 
-    //Make Sure Z index of dots is on top
+    //Make Sure Z index of dots is on top of each box
     function getDotsOnTop() {
         var $dots = $('.dot');
         for (let i = 0; i < $dots.length; i++) {
@@ -56,7 +58,7 @@ $(document).ready(function() {
         }
     } //end get dots on top
 
-    //Hovers
+    //Hover Functions
     function hoverLeft(e) {
         var $offset = $(this).offset();
         var $xLocation = (e.pageX - $offset.left);
@@ -100,10 +102,8 @@ $(document).ready(function() {
                 addHoverSide($(this), 'bottom');
             } else {
                 $(this).addClass('hover-transparent');
-
             }
         }
-
     } // end hoverBottom
 
     function hoverOff() {
@@ -140,10 +140,12 @@ $(document).ready(function() {
                 incrementPlayerCount();
                 winBox = true;
                 if (currentPlayer === playerOne) {
-                    $thisBox.css('background', $playerOneColor);
+                    $thisBox.css('background', $playerOneColor).children().last().text(currentPlayer);
                     gameCounter++;
                 } else {
-                    $thisBox.css('background', $playerTwoColor);
+                    //$winnerName.text(playerTwo);
+                    $thisBox.css('background', $playerTwoColor).children().last().text(currentPlayer);
+
                     gameCounter++;
                 }
             } //end if
@@ -153,20 +155,22 @@ $(document).ready(function() {
 
     // Display Winner
     function winMessage() {
+        $displayMessage.removeClass('bounceInDown');
         if (playerOneScore > playerTwoScore) {
-            $displayMessage.text("Congrats " + playerOne + " wins!");
+            $displayMessage.addClass('bounceInDown').text("Congrats " + playerOne + " wins!");
         } else if (playerTwoScore > playerOneScore) {
-            $displayMessage.text("Congrats " + playerTwo + " wins!");
+            $displayMessage.addClass('bounceInDown').text("Congrats " + playerTwo + " wins!");
         } else {
-            $displayMessage.text("A tie! Everyone Wins!");
+            $displayMessage.addClass('bounceInDown').text("A tie! Everyone Wins!");
         }
     } //end Win Function
 
     //Find if box completed, assign correct player and/or win message
     function assignPlayer() {
+        $displayMessage.removeClass('rubberBand');
         if (winBox === true && gameCounter <= 15) {
             currentPlayer = currentPlayer;
-            $displayMessage.text(currentPlayer + " you got a box! Go again!");
+            $displayMessage.addClass('rubberBand').text(currentPlayer + " you got a box! Go again!");
         } else if (winBox === true && gameCounter === 16) {
             winMessage();
         } else {
@@ -185,7 +189,6 @@ $(document).ready(function() {
     } //end switchPLayer
 
     //player Count for score
-
     function incrementPlayerCount() {
         if (currentPlayer === playerOne) {
             playerOneScore++;
@@ -209,61 +212,55 @@ $(document).ready(function() {
             if ($(this).hasClass('first')) {
                 //LEFT FAR LEFT
                 addBorder($(this), "left");
-                $(this).attr('data-left', true);
-                $(this).off('mouseenter', hoverLeft);
+                $(this).attr('data-left', true).off('mouseenter', hoverLeft);
                 removeHoverSide($(this), "left");
 
             } else {
                 //LEFT
                 addBorder($(this), "left");
-                $(this).attr('data-left', true); //sets left border for box clicked in
-                $(this).prev().attr('data-right', true); //sets right border for previous sibling shared border
-                $(this).prev().off('mouseenter', hoverRight);
-                $(this).off('mouseenter', hoverLeft);
+                //sets left border for box clicked in
+                $(this).attr('data-left', true).off('mouseenter', hoverLeft);
+                //sets right border and data attribute for previous sibling shared border
+                $(this).prev().attr('data-right', true).off('mouseenter', hoverRight);
                 removeHoverSide($(this), "left");
             }
         } else if (($xLocation <= $boxSize && $xLocation >= $boxHigh) && ($yLocation >= $boxZero && $yLocation <= $boxSize)) {
             //FAR RIGHT
             if ($(this).hasClass('fourth')) {
                 addBorder($(this), "right");
-                $(this).off('mouseenter', hoverRight);
+                $(this).off('mouseenter', hoverRight).attr('data-right', true);
                 removeHoverSide($(this), 'right');
-                $(this).attr('data-right', true);
 
             } else { //RIGHT
-                $(this).off('mouseenter', hoverRight);
+                $(this).off('mouseenter', hoverRight).attr('data-right', true); //sets right border
                 removeHoverSide($(this), 'right');
-                $(this).attr('data-right', true); //sets right border
             }
 
         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation >= $boxZero && $yLocation <= $boxLow)) {
             //TOP
             addBorder($(this), 'top');
-            $(this).off('mouseenter', hoverTop);
-            $(this).attr('data-top', true);
+            $(this).off('mouseenter', hoverTop).attr('data-top', true);
             removeHoverSide($(this), 'top');
-            $(this).parent().prev().children().eq($(this).index()).off('mouseenter', hoverBottom);
-            $(this).parent().prev().children().eq($(this).index()).attr('data-bottom', true);
+            ///sets above box data attribute and border
+            $(this).parent().prev().children().eq($(this).index()).off('mouseenter', hoverBottom).attr('data-bottom', true);
 
         } else if (($xLocation >= $boxZero && $xLocation <= $boxSize) && ($yLocation <= $boxSize && $yLocation >= $boxHigh)) {
             //BOTTOM
             if ($(this).hasClass("fourth-row")) {
                 addBorder($(this), 'bottom');
-                $(this).off('mouseenter', hoverBottom);
-                $(this).attr('data-bottom', true);
+                $(this).off('mouseenter', hoverBottom).attr('data-bottom', true);
                 removeHoverSide($(this), 'bottom');
 
-
             } else {
-                $(this).off('mouseenter', hoverBottom);
-                $(this).attr('data-bottom', true);
+                $(this).off('mouseenter', hoverBottom).attr('data-bottom', true);
                 removeHoverSide($(this), 'bottom');
 
             } //end inside if
 
         } else {
+            $displayMessage.removeClass('shake');
             console.log(currentPlayer);
-            $displayMessage.text(currentPlayer + " stay between the lines...the lines...the lines are our friends...");
+            $displayMessage.addClass('shake').text(currentPlayer + " stay between the lines...the lines...the lines are our friends...");
             return;
         } //end outside if
         checkWin();
@@ -281,6 +278,10 @@ $(document).ready(function() {
         $box.hover(hoverBottom, hoverOff);
         $box.on('click', boxClick);
         $(this).fadeOut(1000);
+        $('.game-body').fadeOut(1000, 0, function() {
+            $(this).fadeIn(1000).css('background-color', 'transparent');
+        });
+
     }); // end startButton
 
     //DO NOT DELETE
