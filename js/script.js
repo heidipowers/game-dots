@@ -53,7 +53,7 @@ $(document).ready(function() {
     //Make Sure Z index of dots is on top of each box
     function getDotsOnTop() {
         var $dots = $('.dot');
-        for (let i = 0; i < $dots.length; i++) {
+        for (var i = 0; i < $dots.length; i++) {
             $dots.eq(i).css('z-index', (500 + i));
         }
     } //end get dots on top
@@ -133,7 +133,7 @@ $(document).ready(function() {
     function checkWin() {
         var allBoxes = $('.incomplete');
         winBox = false;
-        for (let i = 0; i < allBoxes.length; i++) {
+        for (var i = 0; i < allBoxes.length; i++) {
             if (allBoxes.eq(i).attr('data-top') && allBoxes.eq(i).attr('data-right') && allBoxes.eq(i).attr('data-bottom') && allBoxes.eq(i).attr('data-left')) {
                 var $thisBox = allBoxes.eq(i);
                 $thisBox.removeClass('incomplete');
@@ -167,6 +167,7 @@ $(document).ready(function() {
 
     //Find if box completed, assign correct player and/or win message
     function assignPlayer() {
+        $displayMessage.removeClass('shake');
         $displayMessage.removeClass('rubberBand');
         if (winBox === true && gameCounter <= 15) {
             currentPlayer = currentPlayer;
@@ -258,6 +259,7 @@ $(document).ready(function() {
             } //end inside if
 
         } else {
+            $displayMessage.removeClass('rubberBand');
             $displayMessage.removeClass('shake');
             console.log(currentPlayer);
             $displayMessage.addClass('shake').text(currentPlayer + " stay between the lines...the lines...the lines are our friends...");
