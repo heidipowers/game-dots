@@ -1,6 +1,5 @@
 
 $(document).ready(function() {
-    console.log("Ready");
 
     //Globals
     var $box = $('.box');
